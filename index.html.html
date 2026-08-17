@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5,viewport-fit=cover">
+  <meta name="theme-color" content="#0b6648">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Mapa interativo do Summerville Resort com localização em tempo real.">
+  <link rel="canonical" href="https://paparazzi-rn.github.io/mapa-summerville/">
+  <title>Mapa Interativo — Summerville Resort</title>
+  <style>
+    :root { color-scheme: light; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #0b6648; }
+    body { min-height: 100svh; }
+    iframe { position: fixed; inset: 0; width: 100%; height: 100%; height: 100svh; border: 0; background: #0b6648; }
+    .loading {
+      position: fixed; inset: 0; z-index: 2; display: grid; place-items: center;
+      padding: 24px; color: #fff; text-align: center;
+      background: radial-gradient(circle at 50% 35%, #16815d 0, #0b6648 48%, #064732 100%);
+      transition: opacity .3s ease, visibility .3s ease;
+    }
+    .loading.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+    .loading strong { display: block; font-size: clamp(1.1rem, 4vw, 1.55rem); letter-spacing: -.02em; }
+    .loading span { display: block; margin-top: 8px; font-size: .9rem; opacity: .78; }
+    .spinner { width: 44px; height: 44px; margin: 0 auto 18px; border: 4px solid rgba(255,255,255,.25); border-top-color: #fff; border-radius: 50%; animation: spin .8s linear infinite; }
+    .fallback { position: fixed; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 3; transform: translateX(-50%); }
+    .fallback a { color: #fff; font-size: .8rem; text-underline-offset: 3px; opacity: .8; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 1.6s; } .loading { transition: none; } }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading" role="status" aria-live="polite">
+    <div><div class="spinner" aria-hidden="true"></div><strong>Summerville Resort</strong><span>Carregando o mapa interativo…</span></div>
+  </div>
+  <iframe
+    id="summerville-map"
+    src="https://mapa-summerville-resort.paparazzi2.chatgpt.site/"
+    title="Mapa interativo do Summerville Resort"
+    allow="geolocation; camera; fullscreen"
+    allowfullscreen
+    referrerpolicy="strict-origin-when-cross-origin"
+  ></iframe>
+  <noscript class="fallback"><a href="https://mapa-summerville-resort.paparazzi2.chatgpt.site/">Abrir o mapa interativo</a></noscript>
+  <script>
+    const frame = document.getElementById("summerville-map");
+    const loading = document.getElementById("loading");
+    frame.addEventListener("load", () => loading.classList.add("hidden"), { once: true });
+    window.setTimeout(() => loading.classList.add("hidden"), 8000);
+  </script>
+</body>
+</html>
